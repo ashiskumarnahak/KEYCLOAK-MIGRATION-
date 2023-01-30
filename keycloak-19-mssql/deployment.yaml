@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak4
+  labels:
+    app: keycloak4
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak4
+  template:
+    metadata:
+      labels:
+        app: keycloak4
+    spec:
+      volumes:
+        - name: themes
+          persistentVolumeClaim:
+            claimName: ashis-claims1
+      containers:
+      - name: keycloak
+        image: quay.io/keycloak/keycloak:19.0.1
+        args: ["start-dev"]
+        env:
+        - name: KEYCLOAK_ADMIN
+          value: "admin"
+        - name: KEYCLOAK_ADMIN_PASSWORD
+          value: "admin"
+        - name: DB_VENDOR
+          value: "mssql"
+        - name: DB_ADDR
+          value: "mssql-deployment"
+        - name: DB_PORT
+          value: "1433"
+        - name: DB_DATABASE
+          value: "keycloak"
+        - name: DB_USER
+          value: "SA"
+        - name: DB_PASSWORD
+          value: "vV5r9tn0M4@"
+        - name: KC_PROXY
+          value: "edge"
+        ports:
+        - name: http
+          containerPort: 8080
+                  
+      
+                   
+    

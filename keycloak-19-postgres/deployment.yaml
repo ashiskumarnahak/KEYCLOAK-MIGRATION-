@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak3
+  labels:
+    app: keycloak3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak3
+  template:
+    metadata:
+      labels:
+        app: keycloak3
+    spec:
+      containers:
+      - name: keycloak
+        image: quay.io/keycloak/keycloak:19.0.1
+        args: ["start-dev"]
+        env:
+        - name: KEYCLOAK_ADMIN
+          value: "admin"
+        - name: KEYCLOAK_ADMIN_PASSWORD
+          value: "admin"
+        - name: DB_VENDOR
+          value: postgres
+        - name: DB_ADDR
+          value: postgres-svc
+        - name: DB_PORT
+          value: "5432"
+        - name: DB_DATABASE
+          value: keycloak
+        - name: DB_USER
+          value: postgres
+        - name: DB_SCHEMA
+          value: public
+        - name: DB_PASSWORD
+          value: admin
+        - name: KC_PROXY
+          value: "edge"
+        ports:
+        - name: http
+          containerPort: 8080
+       
